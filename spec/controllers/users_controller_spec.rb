@@ -11,7 +11,7 @@ RSpec.describe UsersController, type: :request do
 
     it 'renders data for successful call' do
       get users_path
-      expect(response.body).to include("data")
+      expect(response.body).to include('data')
     end
 
     it 'renders error for unsuccessful call' do
@@ -35,7 +35,7 @@ RSpec.describe UsersController, type: :request do
       user_attrs = { first_name: 'Phil', last_name: 'Taylor', email: 'p@t.com' }
       post users_path, params: user_attrs
 
-      expect(response.body).to include("data")
+      expect(response.body).to include('data')
     end
 
     it 'renders error for unsuccessful call' do
