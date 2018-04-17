@@ -1,6 +1,5 @@
 module Repository
   class BaseRepository
-
     attr_reader :data_source
 
     def initialize(data_source:)
@@ -15,18 +14,28 @@ module Repository
     # You can instantiate repository using this approach:
     # Repository::User[:in_memory]
     def self.[](data_source_type)
-      klass = self.to_s.split('::').last
+      klass = to_s.split('::').last
       data_source_type = data_source_type.to_s.classify
 
       data_source = "DataSource::#{data_source_type}::#{klass}".constantize
 
-      self.new(data_source: data_source.new)
+      new(data_source: data_source.new)
     end
 
-    def wrap(collection, entity_class)
-      return [] if collection.blank?
+    def wrap(data, entity_class)
+      return [] if data.blank?
 
-      collection.map { |entity| entity_class.new(entity) }
+      if data.is_a?(Array)
+        data.map { |entity| wrap_entity(entity, entity_class) }
+      else
+        wrap_entity(data, entity_class)
+      end
+    end
+
+    private
+
+    def wrap_entity(entity_attributes, entity_class)
+      entity_class.new(entity_attributes.slice(*entity_class.schema.keys))
     end
   end
 end

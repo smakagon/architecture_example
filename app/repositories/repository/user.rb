@@ -5,7 +5,7 @@ module Repository
     end
 
     def create(params)
-      Entity::User.new(data_source.create(params))
+      wrap(data_source.create(params), Entity::User)
     end
   end
 end

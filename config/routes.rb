@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
   root to: 'users#index'
-  resources :users, except: [:new, :edit]
+  resources :users, except: %i[new edit]
 end
